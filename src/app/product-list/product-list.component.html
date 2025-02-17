@@ -7,17 +7,22 @@
             <a routerLink="/products/{{ tempProduct.id }}">
               <img src="{{ tempProduct.imageUrl }}" class="img-responsive" />
             </a>
-            <br/>
             <a routerLink="/products/{{ tempProduct.id }}">
               <h1>{{ tempProduct.name }}</h1>
             </a>
-                <div class="price">{{ tempProduct.unitPrice }}</div>
-                <a href="#" class="primary-btn">Add to cart</a>
-            </div>
+            <div class="price">{{ tempProduct.unitPrice }}</div>
+  
+            <!-- Add to Cart button -->
+            <button (click)="addToCart(tempProduct)" class="btn btn-danger">
+              Add to cart
+            </button>
+          </div>
         </div>
-        </div>
-        <div *ngIf="products.length==0" class="alert alert-warning col-md-12">
-                No Record Found
-        </div>
+      </div>
+  
+      <!-- No products found message -->
+      <div *ngIf="products.length == 0" class="alert alert-warning col-md-12">
+        No Records Found
+      </div>
     </div>
-</div>
+  </div>

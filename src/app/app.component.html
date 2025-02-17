@@ -23,34 +23,43 @@
   <div class="page-container">
     <!-- HEADER DESKTOP-->
     <header class="header-desktop">
-        <div class="section-content section-content-p30">
-            <div class="container-fluid">
-                <div class="header-wrap">
-                  <app-search></app-search>
+      <div class="section-content section-content-p30">
+        <div class="container-fluid">
+          <div class="header-wrap">
+            <app-search></app-search>
 
-                    <div class="cart-area d-n">
-                        <a href="shopping-detail.html">
-                            <div class="total">19.22 <span> 2</span> </div> <i class="fa fa-shopping-cart"
-                                aria-hidden="true"></i>
-                        </a>
-                    </div>
+            <!-- updating the cart icon for dynamic values instead of static -->
+
+            <!-- <div class="cart-area d-n">
+                              <a href="shopping-detail.html">
+                                  <div class="total">19.22 <span> 2</span> </div> <i class="fa fa-shopping-cart"
+                                      aria-hidden="true"></i>
+                              </a>
+                          </div> -->
+
+            <div class="cart-area">
+              <a routerLink="/cart">
+                <div class="total">
+                  {{ cartTotal | currency }} <span>{{ cartQuantity }}</span>
                 </div>
-                <div class="account-wrap"></div>
+                <i class="fa fa-shopping-cart"></i>
+              </a>
             </div>
+          </div>
+          <div class="account-wrap"></div>
         </div>
+      </div>
     </header>
     <!-- END HEADER DESKTOP-->
-     <!-- MAIN CONTENT-->
-    
-     <router-outlet></router-outlet>
-    </div>
+    <!-- MAIN CONTENT-->
+    <router-outlet></router-outlet>
+  </div>
 
-    <footer>
-        <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Help</a></li>
-        </ul>
-    </footer>
-
-
+  <footer class="mt-auto bg-light py-3">
+    <ul class="list-inline text-center">
+      <li class="list-inline-item"><a href="#">About Us</a></li>
+      <li class="list-inline-item"><a href="#">Contact Us</a></li>
+      <li class="list-inline-item"><a href="#">Help</a></li>
+    </ul>
+  </footer>
+</div>
