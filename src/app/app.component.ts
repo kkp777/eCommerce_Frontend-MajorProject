@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ProductCategoryComponent } from './product-category/product-category.component';
 import { SearchComponent } from './search/search.component';
 import { CartService } from './services/cart.service';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ import { CartService } from './services/cart.service';
     RouterModule,
     ProductListComponent,
     CommonModule,
+    CheckoutComponent,
     ProductCategoryComponent,
     SearchComponent,
   ],
