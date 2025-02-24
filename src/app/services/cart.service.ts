@@ -1,67 +1,153 @@
-import { Injectable } from '@angular/core';
+//import { Injectable } from '@angular/core';
 import { CartItem } from '../common/cart-item';
 import { BehaviorSubject } from 'rxjs';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartService {
-  private cartItems:CartItem[]=[];
-  private totalQuantitySubject=new BehaviorSubject<number>(0);
-  private totalPriceSubject=new BehaviorSubject<number>(0);
+  private cartItems: CartItem[] = [];
+  private cartKey = 'userCart';
+  private totalQuantitySubject = new BehaviorSubject<number>(0);
+  private totalPriceSubject = new BehaviorSubject<number>(0);
 
   totalQuantity$ = this.totalQuantitySubject.asObservable();
   totalPrice$ = this.totalPriceSubject.asObservable();
-  constructor() { }
 
-  //method to add productto cart
-  addToCart(product:CartItem){
-    const existingItem=this.cartItems.find((item)=>item.id === product.id);
-    if(existingItem){
-      existingItem.quantity++;
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadCart();
     }
-    else{
-      this.cartItems.push({ ...product,quantity:1});
+  }
+ // constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
+  loadCart() {
+    if (isPlatformBrowser(this.platformId)) {
+      const cartData = localStorage.getItem('cart');
+      if (cartData) {
+        console.log('Restored cart:', JSON.parse(cartData));
+      }
     }
-    this.updateCartTotals();//update totals after adding the item
   }
 
-   //method to get all items in the cart
-   getCartItems(): CartItem[] {
+  saveCart(cart: any) {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+  }
+
+  clearCart() {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('cart');
+    }
+  }
+
+  //method to add product to cart
+  addToCart(product: CartItem) {
+    const existingItem = this.cartItems.find((item) => item.id === product.id);
+    if (existingItem) {
+      existingItem.quantity++;
+    } else {
+      this.cartItems.push({ ...product, quantity: 1 });
+     // this.saveCart();  
+    }
+
+    this.updateCartTotals();
+    this.savedCartToStorage(); // Update totals after adding the item
+  }
+  private savedCartToStorage(){
+    localStorage.setItem('cartItems',JSON.stringify(this.cartItems));
+  }
+  private loadCartItems() {
+    const cartData = localStorage.getItem('cartItems');
+    if (cartData) {
+      this.cartItems = JSON.parse(cartData);
+      this.updateCartTotals(); // Update totals after loading cart
+    }
+  }
+  // saveCart() {
+  //   // Store cart items in localStorage
+  //   localStorage.setItem(this.cartKey, JSON.stringify(this.cartItems));
+  // }
+
+  //method to get all items in the cart
+  getCartItems(): CartItem[] {
     return this.cartItems;
   }
 
-  //method to get all items in the cart
-  updateItemQuantity(id:number,quantity:number){
-    const item=this.cartItems.find((cartItem)=>cartItem.id === id);
-    if(item){
-      item.quantity=quantity;
+  ///Updating number of items in the cart
+  updateItemQuantity(id: number, quantity: number) {
+    const item = this.cartItems.find((cartItem) => cartItem.id === id);
+    if (item) {
+      item.quantity = quantity;
+      if (item.quantity === 0) {
+        this.removeFromCart(id); // If quantity is 0, remove the item
+      }
     }
-    this.updateCartTotals(); //update totals after quality change
+    // this.saveCart(); // Save changes to localStorage
+    this.updateCartTotals(); // Update totals after quantity change
   }
 
-  //remove item from cart
-  removeFromCart(id:number){
-    this.cartItems=this.cartItems.filter((item)=>item.id !==id);
+  // Remove item from cart
+  removeFromCart(id: number) {
+    this.cartItems = this.cartItems.filter((item) => item.id !== id);
+   // this.saveCart(); // Save changes to localStorage
+    this.updateCartTotals();
   }
 
-  //get total price of items in the cart
-  getTotalPrice():number{
-    return this.cartItems.reduce(
-        (total,item)=>total+item.unitPrice * item.quantity,0
+  // Get total price of items in the cart
+  // getTotalPrice(): number {
+  //   return this.cartItems.reduce(
+  //     (total, item) => total + item.unitPrice * item.quantity,
+  //     0
+  //   );
+  // }
+
+  getTotalPrice(): number {
+    return parseFloat(
+      this.cartItems
+        .reduce((total, item) => total + item.unitPrice * item.quantity, 0)
+        .toFixed(2)
     );
-  }
-    // Get total quantity of items in the cart
-  getTotalQuantity():number{
-    return this.cartItems.reduce((total,item)=>total+item.quantity,0)
-  }
-    // Update the total price and quantity BehaviorSubjects
-    private updateCartTotals(){
-      const totalQuantity=this.getTotalQuantity();
-      const totalPrice=this.getTotalPrice();
+}
 
-      this.totalQuantitySubject.next(totalQuantity);
-      this.totalPriceSubject.next(totalPrice);
-    }
+  // Get total quantity of items in the cart
+  getTotalQuantity(): number {
+    return this.cartItems.reduce((total, item) => total + item.quantity, 0);
+  }
+
+  // Update the total price and quantity BehaviorSubjects
+  private updateCartTotals() {
+    const totalQuantity = this.getTotalQuantity();
+    const totalPrice = this.getTotalPrice();
+
+    console.log('Updating totalQuantity:', totalQuantity);  // Debug log
+    console.log('Updating totalPrice:', totalPrice);        // Debug log
+
+    this.totalQuantitySubject.next(totalQuantity);
+    this.totalPriceSubject.next(totalPrice);
+  }
+
+  // loadCart() {
+  //   // Load cart items from localStorage on app start
+  //   const savedCart = localStorage.getItem(this.cartKey);
+  //   if (savedCart) {
+  //     this.cartItems = JSON.parse(savedCart);
+  //     this.updateCartTotals();  // Recalculate totals based on loaded cart
+  //   }
+  //   else {
+  //     console.warn('localStorage is not available in SSR mode');
+  //   }
+  // }
+
+  // clearCart() {
+  //   // Clear cart items and remove from localStorage
+  //   console.log('Clearing cart...');
+  //   this.cartItems = [];
+  //   localStorage.removeItem(this.cartKey);
+  //   this.updateCartTotals(); // Update totals after clearing the cart
+  // }
 
 }

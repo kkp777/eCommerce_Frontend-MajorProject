@@ -5,20 +5,30 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
 import { CartComponent } from './cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { LogindetailsComponent } from './logindetails/logindetails.component';
+import { OrderdetailsComponent } from './orderdetails/orderdetails.component';
+import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
+import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
+import { RegisterComponent } from './register/register.component';
 
 export const routes: Routes = [
-    { path: 'checkout', component: CheckoutComponent },
-    { path: 'login-details', component: LogindetailsComponent },
-
     { path: 'cart', component: CartComponent },
-   { path: 'search/:keyword', component: ProductListComponent },
+    { path: 'search/:keyword', component: ProductListComponent },
     { path: 'products/:id', component: ProductDetailsComponent },
-   
-   {path:'categories', component:ProductCategoryComponent},
     { path: 'category/:id', component: ProductListComponent },
     { path: 'category', component: ProductListComponent },
+    { path: 'checkout', component: CheckoutComponent },
     { path: 'products', component: ProductListComponent },
+    { path: 'login-details', component: LogindetailsComponent },
+    { path: 'order-details/:email', component: OrderdetailsComponent },
+    { path: 'product-category', component: ProductCategoryComponent },
+    //{ path: 'admindashboard', component: AdmindashboardComponent },
+    { path: 'forgotpwd', component: ForgotpasswordComponent },
+    { path: 'resetpwd/:email', component: ResetpasswordComponent },
+    { path: 'register', component: RegisterComponent },
+    //{ path: 'filterOrders', component: AdminFilterSearchComponent },
+    //{ path: 'adDashBoard', component: AdmindashboardComponent },
+   // { path: 'viewProduct/:orderId', component: ViewproductComponent },
+  
     { path: '', redirectTo: '/products', pathMatch: 'full' },
     { path: '**', redirectTo: '/products', pathMatch: 'full' },
-  //  { path: 'product-category', component: ProductCategoryComponent },
 ];

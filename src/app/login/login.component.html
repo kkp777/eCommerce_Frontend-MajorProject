@@ -1,0 +1,10 @@
+<div class="cart-area d-n">
+    <div class="form-header">
+        <button *ngIf="!LoginService.isLoggedIn()" [routerLink]="['/login-details']" class="au-btn-submit">
+            Login
+        </button>
+        <button *ngIf="LoginService.isLoggedIn()" (click)="LoginService.logout()" [routerLink]="['/']" class="au-btn-submit">
+            Logout
+        </button>
+    </div>
+</div>
