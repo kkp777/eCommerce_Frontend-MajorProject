@@ -1,17 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Resetpwd } from '../common/resetpwd';
 import { ResetpwdService } from '../services/resetpwd.service';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-resetpassword',
+  standalone: true,
   imports: [CommonModule,ReactiveFormsModule,RouterModule],
   templateUrl: './resetpassword.component.html',
   styleUrl: './resetpassword.component.css'
 })
-export class ResetpasswordComponent {
+export class ResetpasswordComponent{
+
   constructor(private formBuilder: FormBuilder,private resetPwd:ResetpwdService,private route:ActivatedRoute){}
 
   resetFormGroup!: FormGroup;
@@ -44,4 +46,5 @@ export class ResetpasswordComponent {
     );
     this.resetFormGroup.reset();
   }
+  
 }

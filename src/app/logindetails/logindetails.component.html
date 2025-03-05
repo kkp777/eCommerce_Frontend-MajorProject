@@ -1,8 +1,8 @@
 <div class="main-content page-m">
     <div class="section-content section-content-p30">
         <div class="container-fluid">
-            <h2>Login Page</h2>
-            <div *ngIf="errormsg" class="error-message">
+            <h2 class="text-center">Login Page</h2>
+            <div *ngIf="errormsg" class="error-message text-center">
                 {{errormsg}}
             </div>
             <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">

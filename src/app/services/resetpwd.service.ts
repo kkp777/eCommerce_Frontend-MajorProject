@@ -10,7 +10,7 @@ export class ResetpwdService {
 
   private apiUrl = "http://localhost:8082/api/customer/reset-pwd";
 
-  
+  // private apiUrl = "http://localhost:3333/api/customer/reset-pwd";
 
   constructor(private httpClient: HttpClient) { }
 
@@ -20,6 +20,6 @@ export class ResetpwdService {
     console.log("Inside email check"+email+" "+Resetpwd.newPwd+" "+Resetpwd.confirmNewPwd);
     const url = `${this.apiUrl}/${email}`;
     console.log("URL is "+url);
-    return this.httpClient.post(url,Resetpwd,{responseType:'text'});
+    return this.httpClient.post<string>(this.apiUrl, Resetpwd, { responseType: 'text' as 'json' });
   }
 }

@@ -9,6 +9,9 @@ import { OrderdetailsComponent } from './orderdetails/orderdetails.component';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
 import { RegisterComponent } from './register/register.component';
+import { AdmindashboardComponent } from './admindashboard/admindashboard.component';
+import { AdminFilterSearchComponent } from './admin-filter-search/admin-filter-search.component';
+import { ViewproductComponent } from './viewproduct/viewproduct.component';
 
 export const routes: Routes = [
     { path: 'cart', component: CartComponent },
@@ -21,13 +24,14 @@ export const routes: Routes = [
     { path: 'login-details', component: LogindetailsComponent },
     { path: 'order-details/:email', component: OrderdetailsComponent },
     { path: 'product-category', component: ProductCategoryComponent },
-    //{ path: 'admindashboard', component: AdmindashboardComponent },
+    { path: 'admindashboard', component: AdmindashboardComponent },
     { path: 'forgotpwd', component: ForgotpasswordComponent },
     { path: 'resetpwd/:email', component: ResetpasswordComponent },
     { path: 'register', component: RegisterComponent },
-    //{ path: 'filterOrders', component: AdminFilterSearchComponent },
-    //{ path: 'adDashBoard', component: AdmindashboardComponent },
-   // { path: 'viewProduct/:orderId', component: ViewproductComponent },
+    { path: 'filterOrders', component: AdminFilterSearchComponent },
+    { path: 'adDashBoard', component: AdmindashboardComponent },
+    { path: 'viewProduct/:orderId', component: ViewproductComponent },
+    { path: 'resetpwd', component: ResetpasswordComponent },
   
     { path: '', redirectTo: '/products', pathMatch: 'full' },
     { path: '**', redirectTo: '/products', pathMatch: 'full' },

@@ -45,9 +45,10 @@ export class LoginService {
     }
 
     isLoggedIn() {
-      // Check if token exists in localStorage
-      return !!localStorage.getItem(this.tokenKey);
+      // Check if token exists in sessionStorage (not localStorage)
+      return !!sessionStorage.getItem(this.tokenKey);
     }
+    
 
     // restoreSession() {
     //   const token = localStorage.getItem(this.tokenKey);

@@ -164,12 +164,12 @@ export class CheckoutComponent implements OnInit {
     });
   }
   
-  // continueShopping() {
-  //   this.paymentSuccess = false;
-  //   this.cartService.clearCart();
-  //   this.router.navigateByUrl('/shop');
+  continueShopping() {
+    this.paymentSuccess = false;
+    this.cartService.clearCart();
+    this.router.navigateByUrl('/shop');
   
-  // }
+   }
 
   
 

@@ -38,11 +38,11 @@ export class CartService {
     }
   }
 
-  clearCart() {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('cart');
-    }
-  }
+  // clearCart() {
+  //   if (isPlatformBrowser(this.platformId)) {
+  //     localStorage.removeItem('cart');
+  //   }
+  // }
 
   //method to add product to cart
   addToCart(product: CartItem) {
@@ -142,12 +142,13 @@ export class CartService {
   //   }
   // }
 
-  // clearCart() {
-  //   // Clear cart items and remove from localStorage
-  //   console.log('Clearing cart...');
-  //   this.cartItems = [];
-  //   localStorage.removeItem(this.cartKey);
-  //   this.updateCartTotals(); // Update totals after clearing the cart
-  // }
+  clearCart() {
+    // Clear cart items and remove from sessionStorage
+    console.log('Clearing cart...');
+    this.cartItems = [];
+    sessionStorage.removeItem(this.cartKey);
+    this.updateCartTotals(); // Update totals after clearing the cart
+}
+
 
 }
