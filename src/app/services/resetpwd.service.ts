@@ -20,6 +20,7 @@ export class ResetpwdService {
     console.log("Inside email check"+email+" "+Resetpwd.newPwd+" "+Resetpwd.confirmNewPwd);
     const url = `${this.apiUrl}/${email}`;
     console.log("URL is "+url);
-    return this.httpClient.post<string>(this.apiUrl, Resetpwd, { responseType: 'text' as 'json' });
+
+    return this.httpClient.post(url,Resetpwd,{responseType:'text'});
   }
 }

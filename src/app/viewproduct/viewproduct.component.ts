@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Productresponse } from '../common/productresponse';
@@ -7,44 +7,48 @@ import { DashboardService } from '../services/dashboard.service';
 
 @Component({
   selector: 'app-viewproduct',
+  standalone: true,
   imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './viewproduct.component.html',
-  styleUrl: './viewproduct.component.css'
+  styleUrls: ['./viewproduct.component.css'],
 })
-export class ViewproductComponent implements OnInit, OnChanges {
-
+export class ViewproductComponent implements OnInit {
   orderId: number = 0;
-  old: string = '';
   products: Productresponse[] = [];
+
   constructor(
     private route: ActivatedRoute,
     public dashBoardService: DashboardService,
     private router: Router
-  ) { }
+  ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // this.route.params.subscribe((params) => {
-    //   this.orderId = params['orderId'];
-    //   this.fetchProducts(this.orderId);
-    // });   
-  }
   ngOnInit(): void {
-    this.old = this.route.snapshot.paramMap.get('orderId')!;
-    this.fetchProducts(this.old);
-    // this.route.params.subscribe((params) => {
-    //   this.orderId = params['orderId'];
-    //   this.fetchProducts(this.orderId);
-    // });
+    const oId = this.route.snapshot.paramMap.get('orderId');
+    this.fetchProducts(oId);
   }
-  fetchProducts(old:string){
-    const id=Number(old);
 
-    this.dashBoardService
-      .fetchProductData(id)
-      .subscribe((data:Productresponse[])=>{
-        this.products=data;
-      });
+  fetchProducts(oId: string | null) {
+    if (!oId) {
+      console.error('Invalid orderId received');
+      return;
+    }
+
+    const id = Number(oId);
+    if (isNaN(id) || id <= 0) {
+      console.error('Invalid orderId:', oId);
+      return;
+    }
+
+    this.dashBoardService.fetchProductData(id).subscribe({
+      next: (data) => {
+        this.products = data;
+      },
+      error: (err) => {
+        console.error('Error fetching products:', err);
+      },
+    });
   }
+
   backDashboard() {
     this.router.navigateByUrl('/filterOrders');
   }
